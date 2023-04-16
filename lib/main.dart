@@ -1,6 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flash_chat/common/primary_color.dart';
+import 'package:flash_chat/feature/presentation/pages/pages.dart';
+import 'package:flash_chat/firebase_options.dart';
+import 'package:flash_chat/routes/generate_route.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  initialization(null);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
+}
+
+Future initialization(BuildContext? context) async {
+  await Future.delayed(const Duration(seconds: 4));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -8,15 +24,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material App Bar'),
+        title: 'Flash Chat',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: "OpenSans",
+          primarySwatch: primary,
         ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
-      ),
-    );
+        initialRoute: '/',
+        onGenerateRoute: OnGenerateRoute.route,
+        routes: {
+          "/": (context) {
+            return const HomePage();
+          }
+        });
   }
 }
